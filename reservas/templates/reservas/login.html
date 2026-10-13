@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduPlace — Portal Docente</title>
+    <!-- Tipografía Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Enlace al archivo CSS externo -->
+    <link rel="stylesheet" href="{% static 'reservas/login.css' %}">
+</head>
+<body>
+
+    <div class="login-split">
+        <!-- Columna Visual Izquierda -->
+        <section class="hero-panel">
+            <div class="brand-tag">
+                <span class="brand-dot"></span>
+                <span>EduPlace Suite</span>
+            </div>
+
+            <div class="hero-body">
+                <h1>EduPlace</h1>
+                <h1>Control y asignación de espacios académicos.</h1>
+                <p>Gestión automatizada de salones para catedráticos y personal universitario en tiempo real.</p>
+                
+                <div class="campus-stats">
+                    <div class="stat-item">
+                        <h3>100%</h3>
+                        <span>Disponibilidad</span>
+                    </div>
+                    <div class="stat-item">
+                        <h3>0 Choques</h3>
+                        <span>Horarios Únicos</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-footer">
+                <p>© Universidad — Sistema Integrado de Aulas</p>
+            </div>
+        </section>
+
+        <!-- Columna de Autenticación Derecha -->
+        <section class="form-panel">
+            <div class="form-box">
+                <header class="form-header">
+                    <h2>Bienvenido de vuelta</h2>
+                    <p>Ingresa tus credenciales institucionales.</p>
+                </header>
+
+                {% if form.errors %}
+                    <div class="error-banner">
+                        Credenciales no válidas. Revisa tu usuario y contraseña.
+                    </div>
+                {% endif %}
+
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn-login">Acceder al Sistema →</button>
+                </form>
+
+                <p class="legal-notice">
+                    Uso exclusivo para catedráticos activos. Las credenciales son intransferibles.
+                </p>
+            </div>
+        </section>
+    </div>
+
+</body>
+</html>

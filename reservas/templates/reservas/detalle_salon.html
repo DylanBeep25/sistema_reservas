@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salón {{ salon.nombre }} </title>
+</head>
+<body>
+    <h1>Detalles del Salon</h1>
+    <a href="{% url 'lista_salones' %}">Volver a la lista de salones</a>
+
+    <hr>
+    <h2> {{ salon.nombre}} </h2>
+    <ul>
+        <li><strong>Capacidad: </strong> {{ salon.capacidad }} personas </li>
+        <li><strong>Ubicación: </strong> {{ salon.ubicacion }} </li>
+        <li><strong>Estado: </strong> {% if salon.activo %} Disponible {% else %} Mantenimiento {% endif %} </li>
+    </ul>
+
+    <hr>
+
+    <a href="{% url 'crear_reserva' %}">
+        <button type="button">Reservar el salón</button>
+    </a>
+</body>
+</html>

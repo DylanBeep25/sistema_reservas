@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de salones</title>
+</head>
+<body>
+    <h1>Salones disponibles</h1>
+    <a href="{% url 'home' %}">Volver al inicio</a>
+
+    <hr>
+
+    {% if salones %}
+        <ul>
+            {% for salon in salones %}
+                <li>
+                    <strong>{{ salon.nombre }}</strong> - Capacidad: {{ salon.capacidad}} personas
+
+                    <a href="{% url 'detalle_salon' salon.id %}">
+                        <button type="button">Ver detalles</button>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No hay salones habilitados en este momento</p>
+    {% endif %}
+</body>
+</html>

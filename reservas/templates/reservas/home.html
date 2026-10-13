@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+<body>
+    <h1>Bienvenido al sistemma de reservas EduPlace</h1>
+
+    <a href="{% url 'crear_reserva' %}">Hacer una reservación</a>
+
+    <h1>Ver todos los salones</h1>
+    <a href="{% url 'lista_salones' %}">Lista de salones</a>
+
+    <h2>¿Desea cerrar sesión?</h2>
+    <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit">Cerrar sesión ({{ request.user.username }})</button>
+    </form>
+</body>
+</html>

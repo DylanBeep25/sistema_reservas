@@ -16,7 +16,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.contrib.auth import views as auth_views
+from reservas.views import crear_reserva, pagina_de_exito, Home, lista_salones, detalle_salon
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('reservar/', crear_reserva, name='crear_reserva'),
+    path('exito/', pagina_de_exito, name='pagina_de_exito'),
+    path('home/', Home, name='home'),
+    path('salones/', lista_salones, name='lista_salones'),
+    path('salones/salon/<int:salon_id>', detalle_salon, name='detalle_salon'),
+
+
+    #Login
+    path('login/', auth_views.LoginView.as_view(template_name = 'reservas/login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
 ]
