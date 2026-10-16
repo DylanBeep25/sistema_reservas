@@ -1,0 +1,33 @@
+{% extends 'reservas/base.html' %}
+{% load static %}
+{% block title %}Editar Reserva — EduPlace{% endblock %}
+
+{% block css_extra %}
+    <link rel="stylesheet" href="{% static 'reservas/crear_reserva.css' %}">
+{% endblock %}
+
+
+{% block content %}
+    <main class="form-container">
+        
+        <a href="{% url 'home' %}" class="back-link">
+            ← Regresar al panel
+        </a>
+
+        <div class="card-form">
+            <div class="form-header">
+                <h1>Editar Reserva</h1>
+                <p>Modificando la reserva para el curso <strong>{{ reserva.curso }}</strong> en <strong>{{ reserva.salon.nombre }}</strong>.</p>
+            </div>
+
+            <form method="POST" action="">
+                {% csrf_token %}
+                
+                {{ form.as_p }}
+
+                <button type="submit" class="btn-submit">Actualizar reserva</button>
+            </form>
+        </div>
+
+    </main>
+{% endblock %}

@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.contrib.auth import views as auth_views
-from reservas.views import crear_reserva, pagina_de_exito, Home, lista_salones, detalle_salon
+from reservas.views import crear_reserva, pagina_de_exito, Home, lista_salones, detalle_salon, api_chatbot, editar_reserva, eliminar_reserva
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,9 +26,13 @@ urlpatterns = [
     path('home/', Home, name='home'),
     path('salones/', lista_salones, name='lista_salones'),
     path('salones/salon/<int:salon_id>', detalle_salon, name='detalle_salon'),
+    path('chatbot/', api_chatbot, name= 'api_chatbot'),
+    path('reserva/editar/<int:reserva_id>/', editar_reserva, name='editar_reserva'),
+    path('reserva/eliminar/<int:reserva_id>/', eliminar_reserva, name='eliminar_reserva'),
 
 
     #Login
     path('login/', auth_views.LoginView.as_view(template_name = 'reservas/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+
 ]

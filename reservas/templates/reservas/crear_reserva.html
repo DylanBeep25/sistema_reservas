@@ -1,19 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nueva reserva</title>
-</head>
-<body>
-    <h2>Reserva de un salón</h2>
-    <form method="post" action="">
-        {% csrf_token %}
-        {{ form.as_p }}
+{% extends 'reservas/base.html' %}
+{% load static %}
+{% block title %}Nueva Reserva — EduPlace{% endblock %}
 
-        <button type="submit">Guardar reserva</button>
-    </form>
+{% block css_extra %}
+    <link rel="stylesheet" href="{% static 'reservas/crear_reserva.css' %}">
+{% endblock %}
 
-    <a href="{% url 'home' %}">Regresar al inicio</a>
-</body>
-</html>
+{% block content %}
+    <main class="form-container">
+        
+        <a href="{% url 'home' %}" class="back-link">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+            </svg>
+            Regresar al panel
+        </a>
+
+        <div class="card-form">
+            <div class="form-header">
+                <h1>Reserva de un salón</h1>
+                <p>Completa los datos para asignar el espacio a tu curso.</p>
+            </div>
+
+            <form method="POST" action="">
+                {% csrf_token %}
+                
+                {{ form.as_p }}
+
+                <button type="submit" class="btn-submit">Guardar reserva</button>
+            </form>
+        </div>
+
+    </main>
+{% endblock %}

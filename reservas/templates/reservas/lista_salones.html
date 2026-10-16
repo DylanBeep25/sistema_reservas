@@ -1,30 +1,90 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de salones</title>
-</head>
-<body>
-    <h1>Salones disponibles</h1>
-    <a href="{% url 'home' %}">Volver al inicio</a>
+<!-- 1. Le decimos que herede el molde maestro -->
+{% extends 'reservas/base.html' %}
+{% load static %}
 
-    <hr>
+<!-- 2. Cambiamos el título de la pestaña -->
+{% block title %}Lista de Salones — EduPlace{% endblock %}
 
-    {% if salones %}
-        <ul>
-            {% for salon in salones %}
-                <li>
-                    <strong>{{ salon.nombre }}</strong> - Capacidad: {{ salon.capacidad}} personas
+<!-- 3. Cargamos el CSS específico de esta vista -->
+{% block css_extra %}
+    <link rel="stylesheet" href="{% static 'reservas/lista_salones.css' %}">
+{% endblock %}
 
-                    <a href="{% url 'detalle_salon' salon.id %}">
-                        <button type="button">Ver detalles</button>
-                    </a>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No hay salones habilitados en este momento</p>
-    {% endif %}
-</body>
-</html>
+<!-- 4. Rellenamos el hueco con el contenido real -->
+{% block content %}
+    <main class="container">
+        
+       <div class="header-actions">
+            <div class="page-title">
+                <h1>Salones Disponibles</h1>
+                <p>Gestión rápida de espacios académicos.</p>
+            </div>
+            
+            <div class="search-box">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+                <input type="text" id="buscadorSalones" placeholder="Buscar por nombre o capacidad...">
+            </div>
+        </div>
+
+        {% if salones %}
+            <div class="grid-salones" id="contenedorSalones">
+                {% for salon in salones %}
+                    <!-- Etiqueta data-nombre para facilitar la búsqueda -->
+                    <div class="card-salon" data-nombre="{{ salon.nombre|lower }} {{ salon.capacidad }}">
+                        
+                        <div class="card-icon">
+                            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 21h18M5 21V5a2 2 0 012-2h10a2 2 0 012 2v16M14 11v2"></path>
+                            </svg>
+                        </div>
+                        
+                        <!-- La información ahora está agrupada en el centro -->
+                        <div class="card-content">
+                            <h2 class="card-title">{{ salon.nombre }}</h2>
+                            <div class="card-meta">
+                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 7a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"></path>
+                                </svg>
+                                {{ salon.capacidad }} pers.
+                            </div>
+                        </div>
+
+                        <!-- Botón a la derecha -->
+                        <a href="{% url 'detalle_salon' salon.id %}" class="btn-details">
+                            Ver Horarios
+                        </a>
+                        
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>
+                <h2>No hay salones habilitados</h2>
+                <p>En este momento no existen salones activos en el sistema.</p>
+            </div>
+        {% endif %}
+
+    </main>
+
+        <script>
+        document.getElementById('buscadorSalones').addEventListener('keyup', function(e) {
+            const textoBusqueda = e.target.value.toLowerCase();
+            const tarjetas = document.querySelectorAll('.card-salon');
+
+            tarjetas.forEach(tarjeta => {
+                // Busca dentro de la etiqueta oculta data-nombre que le pusimos al HTML
+                const contenido = tarjeta.getAttribute('data-nombre');
+                if (contenido.includes(textoBusqueda)) {
+                    tarjeta.style.display = 'flex'; // Muestra la tarjeta
+                } else {
+                    tarjeta.style.display = 'none'; // Oculta la tarjeta
+                }
+            });
+        });
+    </script>
+{% endblock %}

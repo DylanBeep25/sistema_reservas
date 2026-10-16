@@ -1,0 +1,272 @@
+:root {
+    --brand-dark: #0a0f1d;
+    --brand-accent: #3b82f6;
+    --brand-glow: #60a5fa;
+    --surface-light: #ffffff;
+    --bg-body: #f8fafc;
+    --text-primary: #0f172a;
+    --text-muted: #64748b;
+    --border-soft: #e2e8f0;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+body {
+    background-color: var(--bg-body);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* === BARRA SUPERIOR Y BOTÓN VOLVER === */
+.topbar {
+    background-color: var(--brand-dark);
+    padding: 1rem 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: -0.02em;
+}
+
+.brand-dot {
+    width: 8px;
+    height: 8px;
+    background-color: var(--brand-glow);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--brand-glow);
+}
+
+.btn-outline-light {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.btn-outline-light:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateX(-2px); /* Pequeño efecto de deslizamiento */
+}
+
+/* === CONTENEDOR Y BUSCADOR === */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2.5rem;
+    width: 100%;
+    flex: 1;
+}
+
+.header-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 2rem;
+    gap: 1rem;
+}
+
+.page-title h1 {
+    font-size: 1.75rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+}
+
+.page-title p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-top: 0.25rem;
+}
+
+.search-box {
+    position: relative;
+    width: 100%;
+    max-width: 320px;
+}
+
+.search-box svg {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    width: 18px;
+    height: 18px;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    border: 1px solid var(--border-soft);
+    border-radius: 10px;
+    font-size: 0.9rem;
+    outline: none;
+    color: var(--text-primary);
+    transition: all 0.2s;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+}
+
+.search-box input:focus {
+    border-color: var(--brand-accent);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.grid-salones {
+    display: grid;
+    /* La función min() evita que la tarjeta sea más ancha que la pantalla del celular */
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 350px), 1fr));
+    gap: 1rem;
+}
+
+.card-salon {
+    background: var(--surface-light);
+    border: 1px solid var(--border-soft);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: center; /* Alinea los elementos en fila */
+    gap: 1rem;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.02);
+}
+
+.card-salon:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(15, 23, 42, 0.05);
+    border-color: #bfdbfe;
+}
+
+.card-icon {
+    width: 44px;
+    height: 44px;
+    background-color: #f1f5f9;
+    color: var(--brand-accent);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.card-content {
+    flex: 1; /* Ocupa el espacio central disponible */
+}
+
+.card-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.card-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-top: 0.2rem;
+}
+
+.card-meta svg {
+    width: 14px;
+    height: 14px;
+    color: var(--brand-accent);
+}
+
+.btn-details {
+    background-color: #f8fafc;
+    color: var(--brand-accent);
+    text-decoration: none;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border: 1px solid var(--border-soft);
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.card-salon:hover .btn-details {
+    background-color: var(--brand-dark);
+    color: #ffffff;
+    border-color: var(--brand-dark);
+}
+
+/* Estado vacío */
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: var(--surface-light);
+    border: 1px dashed var(--border-soft);
+    border-radius: 16px;
+    color: var(--text-muted);
+}
+
+/* === RESPONSIVIDAD PARA LA LISTA Y BUSCADOR === */
+@media (max-width: 768px) {
+    .container {
+        padding: 1.5rem 1.25rem;
+    }
+    
+    .header-actions {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .search-box {
+        max-width: 100%;
+    }
+
+    .grid-salones {
+        grid-template-columns: 1fr; /* Una sola tarjeta por fila en móvil */
+        gap: 0.85rem;
+    }
+
+    .card-salon {
+        padding: 1rem;
+        flex-wrap: wrap; /* Permite que el contenido se acomode mejor */
+        align-items: center;
+    }
+
+    .card-content {
+        min-width: 150px; /* Evita que el texto se apachurre */
+    }
+
+    .card-title {
+        font-size: 1rem; /* Letra un poco más pequeña en celular */
+    }
+
+    .btn-details {
+        width: 100%;
+        text-align: center;
+        margin-top: 0.5rem;
+        padding: 0.5rem;
+    }
+}

@@ -1,0 +1,146 @@
+.form-container {
+    max-width: 650px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+    width: 100%;
+}
+
+/* Enlace de regreso */
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #64748b;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+    transition: color 0.2s;
+}
+.back-link:hover {
+    color: #0f172a;
+}
+
+/* Tarjeta principal del formulario */
+.card-form {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 2.5rem;
+    box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.05), 0 10px 15px -3px rgba(15, 23, 42, 0.02);
+}
+
+.form-header {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 1.5rem;
+}
+
+.form-header h1 {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+}
+
+.form-header p {
+    color: #64748b;
+    font-size: 0.95rem;
+}
+
+/* Estilización de los campos generados por {{ form.as_p }} */
+form p {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+form label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+/* Aplica a los inputs de texto, fechas y menús desplegables (select) */
+form input, 
+form select, 
+form textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    background-color: #f8fafc;
+    color: #0f172a;
+    outline: none;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+form input:focus, 
+form select:focus {
+    background-color: #ffffff;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+/* Texto de ayuda debajo de los inputs (generado por Django) */
+.helptext {
+    font-size: 0.8rem;
+    color: #64748b;
+    margin-top: 0.25rem;
+}
+
+/* Mensajes de error (si el usuario llena mal el formulario) */
+.errorlist {
+    list-style: none;
+    padding: 0;
+    color: #b91c1c;
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-top: 0.25rem;
+}
+.errorlist li {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+.errorlist li::before {
+    content: "⚠️";
+}
+
+/* Botón de envío */
+.btn-submit {
+    width: 100%;
+    background-color: #0a0f1d;
+    color: #ffffff;
+    border: none;
+    padding: 1rem;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 1rem;
+}
+
+.btn-submit:hover {
+    background-color: #1e293b;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(15, 23, 42, 0.1);
+}
+
+/* Responsividad para móviles */
+@media (max-width: 600px) {
+    .form-container {
+        padding: 1.5rem 1rem;
+    }
+    .card-form {
+        padding: 1.5rem;
+    }
+    .form-header h1 {
+        font-size: 1.5rem;
+    }
+}

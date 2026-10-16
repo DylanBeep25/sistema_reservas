@@ -1,22 +1,165 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-</head>
-<body>
-    <h1>Bienvenido al sistemma de reservas EduPlace</h1>
+{% extends 'reservas/base.html' %}
 
-    <a href="{% url 'crear_reserva' %}">Hacer una reservación</a>
+{% block title %}Inicio — EduPlace{% endblock %}
 
-    <h1>Ver todos los salones</h1>
-    <a href="{% url 'lista_salones' %}">Lista de salones</a>
+{% block content %}
+    <div class="home-container">
+        
+        <header>
+            <h1>Bienvenido de vuelta, {{ request.user.first_name|default:request.user.username }}</h1>
+            <p>¿Preparado para gestionar tus espacios?</p>
+        </header>
 
-    <h2>¿Desea cerrar sesión?</h2>
-    <form method="post" action="{% url 'logout' %}">
-        {% csrf_token %}
-        <button type="submit">Cerrar sesión ({{ request.user.username }})</button>
-    </form>
-</body>
-</html>
+        <hr>
+
+        <section class="mis-reservas">
+            <h2>Mis Reservas Activas</h2>
+            
+            {% if reservas_usuario %}
+                <ul style="list-style: none; padding: 0;">
+                    {% for reserva in reservas_usuario %}
+                        <li style="background: #fff; padding: 15px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <strong>{{ reserva.salon.nombre }}</strong> - {{ reserva.curso }} 
+                                <span style="font-size: 0.8rem; background: #e2e8f0; padding: 2px 8px; border-radius: 12px; margin-left: 10px;">{{ reserva.get_estado_display }}</span>
+                                <br>
+                                <em style="color: #666;">Fecha: {{ reserva.fecha }} | Horario: {{ reserva.horario }}</em>
+                            </div>
+                            
+                            <!-- Botones de Acción -->
+                            <div style="display: flex; gap: 10px;">
+                                <a href="{% url 'editar_reserva' reserva.id %}" style="padding: 5px 10px; background: #3b82f6; color: white; text-decoration: none; border-radius: 5px; font-size: 0.85rem;">Editar</a>
+                                
+                                <form method="POST" action="{% url 'eliminar_reserva' reserva.id %}" style="margin: 0;">
+                                    {% csrf_token %}
+                                    <button type="submit" onclick="return confirm('¿Estás seguro de que deseas cancelar esta reserva?');" style="padding: 5px 10px; background: #ef4444; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 0.85rem;">Cancelar</button>
+                                </form>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>Aún no tienes ninguna reserva programada.</p>
+            {% endif %}
+        </section>
+
+        <hr>
+
+        <section class="enlaces-rapidos">
+            <h2>Acciones</h2>
+            <ul>
+                <li><a href="{% url 'lista_salones' %}">Explorar Salones (Recomendado)</a></li>
+                <li><a href="{% url 'crear_reserva' %}">Formulario directo de reserva</a></li>
+            </ul>
+        </section>
+
+        <hr>
+
+        <!-- SECCIÓN DEL CHATBOT FUNCIONAL (SIN DISEÑO) -->
+        <section class="chatbot-section">
+            <h2>Asistente EduPlace (IA)</h2>
+            
+            <div id="chatbot-ui-container" style="border: 2px dashed #999; padding: 20px; background-color: #f9f9f9; max-width: 600px;">
+                
+                <!-- Historial de mensajes -->
+                <div id="chat-historial" style="height: 250px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; background-color: #fff;">
+                    <p style="margin-bottom: 10px;">
+                        <strong>Asistente:</strong> Hola, soy el asistente de EduPlace. Pregúntame sobre la disponibilidad de los salones. =)
+                    </p>
+                </div>
+
+                <!-- Controles de envío -->
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="chat-input" placeholder="Escribe tu mensaje aquí..." style="flex: 1; padding: 8px;">
+                    <button type="button" id="btn-enviar" style="padding: 8px 15px;">Enviar</button>
+                </div>
+
+            </div>
+        </section>
+
+        <hr>
+
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit">Cerrar sesión ({{ request.user.username }})</button>
+        </form>
+
+    </div>
+
+    <!-- SCRIPT DEL CHATBOT -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const btnEnviar = document.getElementById('btn-enviar');
+            const chatInput = document.getElementById('chat-input');
+            const chatHistorial = document.getElementById('chat-historial');
+
+            // Función para pintar un mensaje en la caja
+            function agregarMensaje(remitente, texto) {
+                const mensajeHTML = `<p style="margin-bottom: 10px;"><strong>${remitente}:</strong> ${texto}</p>`;
+                chatHistorial.insertAdjacentHTML('beforeend', mensajeHTML);
+                // Hacer scroll automático hacia abajo
+                chatHistorial.scrollTop = chatHistorial.scrollHeight;
+            }
+
+            async function enviarMensaje() {
+                const mensaje = chatInput.value.trim();
+                if (!mensaje) return;
+
+                // 1. Mostrar lo que el usuario escribió y limpiar el input
+                agregarMensaje('Tú', mensaje);
+                chatInput.value = '';
+                
+                // Deshabilitar input mientras responde
+                chatInput.disabled = true;
+                btnEnviar.disabled = true;
+
+                // Agregar indicador de carga temporal
+                const idCarga = 'msg-carga-' + Date.now();
+                chatHistorial.insertAdjacentHTML('beforeend', `<p id="${idCarga}" style="color: #666;"><em>El asistente está pensando...</em></p>`);
+                chatHistorial.scrollTop = chatHistorial.scrollHeight;
+
+                try {
+                    const respuesta = await fetch('/chatbot/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ mensaje: mensaje })
+                    });
+
+                    const datos = await respuesta.json();
+
+                    // 3. Quitar el mensaje de "pensando"
+                    document.getElementById(idCarga).remove();
+
+                    // 4. Mostrar la respuesta
+                    if (datos.respuesta) {
+                        agregarMensaje('Asistente', datos.respuesta);
+                    } else {
+                        agregarMensaje('Sistema', 'Error: ' + (datos.error || 'Respuesta inválida.'));
+                    }
+
+                } catch (error) {
+                    document.getElementById(idCarga).remove();
+                    agregarMensaje('Sistema', 'Error de conexión con el servidor.');
+                } finally {
+                    // Volver a habilitar el input
+                    chatInput.disabled = false;
+                    btnEnviar.disabled = false;
+                    chatInput.focus();
+                }
+            }
+
+            // Enviar con el botón
+            btnEnviar.addEventListener('click', enviarMensaje);
+
+            // Enviar con la tecla Enter
+            chatInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    enviarMensaje();
+                }
+            });
+        });
+    </script>
+{% endblock %}
