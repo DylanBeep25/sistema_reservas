@@ -1,0 +1,318 @@
+/* ==========================================================================
+   DISEÑO DEL DASHBOARD (HOME)
+   ========================================================================== */
+
+.carrusel {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    z-index: -1;
+    background-color: #0a0f1d;
+}
+
+.carrusel-imagenes img {
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
+}
+
+.capa-oscura {
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 15, 29, 0.85); /* Fondo oscuro más elegante */
+}
+
+.contenido-dashboard {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.bienvenida {
+    color: white;
+    margin-bottom: 2rem;
+}
+
+.bienvenida h1 {
+    font-size: 28px;
+    margin-bottom: 5px;
+}
+
+.bienvenida h1 span {
+    color: #3b82f6; /* Azul primario en lugar de morado */
+}
+
+.bienvenida p {
+    color: #94a3b8;
+}
+
+/* LAYOUT GRID: Acomoda el chatbot y la agenda uno al lado del otro */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* CAJAS GENERALES (Chatbot y Agenda) */
+.chatbot, .agenda {
+    background: #1e293b; /* Slate oscuro */
+    border: 1px solid #334155;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    height: 550px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+.chatbot-titulo, .agenda-titulo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px 20px;
+    background: #0f172a; /* Cabeceras más oscuras */
+    border-bottom: 1px solid #334155;
+    border-radius: 16px 16px 0 0;
+    color: white;
+}
+
+.icono-bot, .agenda-icono {
+    font-size: 28px;
+    color: #3b82f6;
+}
+
+.chatbot-titulo h2, .agenda-titulo h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.chatbot-titulo p, .agenda-titulo p {
+    margin: 0;
+    font-size: 13px;
+    color: #94a3b8;
+}
+
+/* CHATBOT MENSAJES */
+.chat-mensajes {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.mensaje {
+    max-width: 85%;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.mensaje.bot {
+    align-self: flex-start;
+    background: #334155;
+    color: white;
+    border-bottom-left-radius: 4px;
+}
+
+.mensaje.usuario {
+    align-self: flex-end;
+    background: #3b82f6; /* Mensajes del usuario en azul */
+    color: white;
+    border-bottom-right-radius: 4px;
+}
+
+.chat-formulario {
+    display: flex;
+    gap: 10px;
+    padding: 15px;
+    background: #0f172a;
+    border-top: 1px solid #334155;
+    border-radius: 0 0 16px 16px;
+}
+
+.chat-formulario input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid #475569;
+    border-radius: 25px;
+    background: #1e293b;
+    color: white;
+    outline: none;
+}
+
+.chat-formulario input:focus {
+    border-color: #3b82f6;
+}
+
+.chat-formulario button {
+    width: 45px;
+    height: 45px;
+    border: none;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.chat-formulario button:hover {
+    transform: scale(1.05);
+}
+
+/* AGENDA (Reservas) */
+.lista-salones {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px 20px;
+}
+
+.salon-agenda {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 0;
+    border-bottom: 1px solid #334155;
+    color: white;
+}
+
+.salon-icono {
+    width: 45px;
+    height: 45px;
+    background: #0f172a;
+    border: 1px solid #3b82f6;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: #3b82f6;
+}
+
+.salon-info {
+    flex: 1;        
+    min-width: 0;    
+}
+
+.salon-info h3 { margin: 0 0 5px; font-size: 16px; }
+.salon-info p { margin: 0; color: #94a3b8; font-size: 13px; }
+
+.acciones-reserva {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.estado-salon {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.estado-disponible { background: #064e3b; color: #34d399; } /* Verde para Aprobada */
+.estado-pendiente { background: #78350f; color: #fbbf24; } /* Naranja para Pendiente */
+
+.botones-accion {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.botones-accion form {
+    display: flex;
+    align-items: center;
+    margin: 0;
+}
+
+.btn-editar, .btn-cancelar {
+    display: inline-flex; /* Convierte el botón en un contenedor flexible */
+    align-items: center;  /* Centra el icono verticalmente */
+    justify-content: center; /* Centra el icono horizontalmente */
+    width: 32px;  /* Ancho fijo para que sea cuadrado */
+    height: 32px; /* Alto fijo igual al ancho */
+    padding: 0;   /* Quitamos el padding para que no deforme el cuadrado */
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+    border: none;
+    color: white;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.btn-editar { background: #3b82f6; }
+.btn-cancelar { background: #ef4444; }
+
+.btn-editar:hover, .btn-cancelar:hover { 
+    transform: translateY(-2px);
+    opacity: 0.85;
+}
+
+.enlaces-rapidos {
+    padding: 15px 20px;
+    display: flex;
+    gap: 10px;
+    background: #0f172a;
+    border-radius: 0 0 16px 16px;
+    border-top: 1px solid #334155;
+}
+
+.btn-accion {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+.btn-accion.primario { background: #3b82f6; color: white; }
+.btn-accion.primario:hover { background: #2563eb; }
+.btn-accion.secundario { background: #334155; color: white; border: 1px solid #475569; }
+.btn-accion.secundario:hover { background: #475569; }
+
+.form-logout { 
+    margin-top: 2rem; 
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-logout {
+    display: inline-flex;
+    align-items: center;
+    background-color: #ffffff; /* Fondo blanco */
+    color: #ef4444; /* Texto rojo para indicar acción de salida */
+    border: 2px solid #ef4444; /* Borde rojo que resalta */
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.btn-logout:hover { 
+    background-color: #ef4444; /* Se llena de rojo al pasar el mouse */
+    color: #ffffff; /* El texto pasa a blanco */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(239, 68, 68, 0.3);
+}
+
+/* RESPONSIVE: Si la pantalla es pequeña, pone una caja debajo de la otra */
+@media (max-width: 900px) {
+    .dashboard-grid { grid-template-columns: 1fr; }
+    .chatbot, .agenda { height: 450px; }
+}

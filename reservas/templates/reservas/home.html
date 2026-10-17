@@ -1,165 +1,171 @@
 {% extends 'reservas/base.html' %}
+{% load static %}
 
 {% block title %}Inicio — EduPlace{% endblock %}
 
+{% block css_extra %}
+    <link rel="stylesheet" href="{% static 'reservas/home_dashboard.css' %}">
+{% endblock %}
+
 {% block content %}
-    <div class="home-container">
-        
-        <header>
-            <h1>Bienvenido de vuelta, {{ request.user.first_name|default:request.user.username }}</h1>
-            <p>¿Preparado para gestionar tus espacios?</p>
-        </header>
-
-        <hr>
-
-        <section class="mis-reservas">
-            <h2>Mis Reservas Activas</h2>
-            
-            {% if reservas_usuario %}
-                <ul style="list-style: none; padding: 0;">
-                    {% for reserva in reservas_usuario %}
-                        <li style="background: #fff; padding: 15px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center;">
-                            <div>
-                                <strong>{{ reserva.salon.nombre }}</strong> - {{ reserva.curso }} 
-                                <span style="font-size: 0.8rem; background: #e2e8f0; padding: 2px 8px; border-radius: 12px; margin-left: 10px;">{{ reserva.get_estado_display }}</span>
-                                <br>
-                                <em style="color: #666;">Fecha: {{ reserva.fecha }} | Horario: {{ reserva.horario }}</em>
-                            </div>
-                            
-                            <!-- Botones de Acción -->
-                            <div style="display: flex; gap: 10px;">
-                                <a href="{% url 'editar_reserva' reserva.id %}" style="padding: 5px 10px; background: #3b82f6; color: white; text-decoration: none; border-radius: 5px; font-size: 0.85rem;">Editar</a>
-                                
-                                <form method="POST" action="{% url 'eliminar_reserva' reserva.id %}" style="margin: 0;">
-                                    {% csrf_token %}
-                                    <button type="submit" onclick="return confirm('¿Estás seguro de que deseas cancelar esta reserva?');" style="padding: 5px 10px; background: #ef4444; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 0.85rem;">Cancelar</button>
-                                </form>
-                            </div>
-                        </li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p>Aún no tienes ninguna reserva programada.</p>
-            {% endif %}
-        </section>
-
-        <hr>
-
-        <section class="enlaces-rapidos">
-            <h2>Acciones</h2>
-            <ul>
-                <li><a href="{% url 'lista_salones' %}">Explorar Salones (Recomendado)</a></li>
-                <li><a href="{% url 'crear_reserva' %}">Formulario directo de reserva</a></li>
-            </ul>
-        </section>
-
-        <hr>
-
-        <!-- SECCIÓN DEL CHATBOT FUNCIONAL (SIN DISEÑO) -->
-        <section class="chatbot-section">
-            <h2>Asistente EduPlace (IA)</h2>
-            
-            <div id="chatbot-ui-container" style="border: 2px dashed #999; padding: 20px; background-color: #f9f9f9; max-width: 600px;">
-                
-                <!-- Historial de mensajes -->
-                <div id="chat-historial" style="height: 250px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; background-color: #fff;">
-                    <p style="margin-bottom: 10px;">
-                        <strong>Asistente:</strong> Hola, soy el asistente de EduPlace. Pregúntame sobre la disponibilidad de los salones. =)
-                    </p>
-                </div>
-
-                <!-- Controles de envío -->
-                <div style="display: flex; gap: 10px;">
-                    <input type="text" id="chat-input" placeholder="Escribe tu mensaje aquí..." style="flex: 1; padding: 8px;">
-                    <button type="button" id="btn-enviar" style="padding: 8px 15px;">Enviar</button>
-                </div>
-
-            </div>
-        </section>
-
-        <hr>
-
-        <form method="post" action="{% url 'logout' %}">
-            {% csrf_token %}
-            <button type="submit">Cerrar sesión ({{ request.user.username }})</button>
-        </form>
-
+    <!-- Carrusel de fondo -->
+    <div class="carrusel">
+        <div class="carrusel-imagenes">
+            <!-- Asegúrate de tener esta imagen en tu carpeta static/img/ o quita esta línea si usas color sólido -->
+            <img src="{% static 'img/EduPLace_logo_final.jpg' %}" alt="Fondo universitario" onerror="this.style.display='none'">
+        </div>
+        <div class="capa-oscura"></div>
     </div>
 
-    <!-- SCRIPT DEL CHATBOT -->
+    <main class="contenido-dashboard">
+        
+        <!-- BIENVENIDA -->
+        <div class="bienvenida">
+            <h1>¡Buenos días, <span>{{ request.user.first_name|default:request.user.username }}</span>!</h1>
+            <p>Bienvenido de vuelta, ¿preparado para gestionar tus espacios?</p>
+        </div>
+
+        <!-- CONTENEDOR PRINCIPAL: CHATBOT Y RESERVAS -->
+        <div class="dashboard-grid">
+            
+            <!-- CHATBOT EDUPLACE -->
+            <section class="chatbot">
+                <div class="chatbot-titulo">
+                    <span class="icono-bot"></span>
+                    <div>
+                        <h2>Chatbot EduPlace</h2>
+                        <p>IA conectada a tus salones</p>
+                    </div>
+                </div>
+
+                <div class="chat-mensajes" id="chat-historial">
+                    <div class="mensaje bot">
+                        -- ¡Hola! Soy el asistente de EduPlace. Pregúntame sobre la disponibilidad de los salones. --
+                    </div>
+                </div>
+
+                <form class="chat-formulario" id="chatFormulario">
+                    <input type="text" id="chat-input" placeholder="Escribe tu mensaje aquí..." autocomplete="off" required>
+                    <button type="submit" id="btn-enviar" aria-label="Enviar mensaje">➤</button>
+                </form>
+            </section>
+
+            <!-- AGENDA (TUS RESERVAS) -->
+            <section class="agenda">
+                <div class="agenda-titulo">
+                    <div class="agenda-icono">▦</div>
+                    <div>
+                        <h2>Mis Reservas Activas</h2>
+                        <p>Gestión de tus espacios</p>
+                    </div>
+                </div>
+
+                <div class="lista-salones">
+                    {% if reservas_usuario %}
+                        {% for reserva in reservas_usuario %}
+                            <div class="salon-agenda">
+                                <div class="salon-icono">▣</div>
+                                <div class="salon-info">
+                                    <h3>{{ reserva.salon.nombre }}</h3>
+                                    <p>{{ reserva.curso }} | {{ reserva.fecha }} | {{ reserva.horario }}</p>
+                                </div>
+                                <div class="acciones-reserva">
+                                    <span class="estado-salon {% if reserva.estado == 'Aprobada' %}estado-disponible{% else %}estado-pendiente{% endif %}">
+                                        {{ reserva.get_estado_display }}
+                                    </span>
+                                    <div class="botones-accion">
+                                        <a href="{% url 'editar_reserva' reserva.id %}" class="btn-editar">✎</a>
+                                        <form method="POST" action="{% url 'eliminar_reserva' reserva.id %}" style="margin:0;">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn-cancelar" onclick="return confirm('¿Cancelar reserva?');">🗑</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div style="padding: 20px; text-align: center; color: #a9c5eb;">
+                            <p>Aún no tienes ninguna reserva programada.</p>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- ACCIONES RÁPIDAS -->
+                <div class="enlaces-rapidos">
+                    <a href="{% url 'lista_salones' %}" class="btn-accion primario">Explorar Salones</a>
+                    <a href="{% url 'crear_reserva' %}" class="btn-accion secundario">+ Nueva Reserva</a>
+                </div>
+            </section>
+        </div>
+
+        <form method="post" action="{% url 'logout' %}" class="form-logout">
+            {% csrf_token %}
+            <button type="submit" class="btn-logout">Cerrar sesión ({{ request.user.username }})</button>
+        </form>
+
+    </main>
+
+    <!-- SCRIPT DEL CHATBOT REAL -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const btnEnviar = document.getElementById('btn-enviar');
+            const chatFormulario = document.getElementById('chatFormulario');
             const chatInput = document.getElementById('chat-input');
             const chatHistorial = document.getElementById('chat-historial');
+            const btnEnviar = document.getElementById('btn-enviar');
 
-            // Función para pintar un mensaje en la caja
-            function agregarMensaje(remitente, texto) {
-                const mensajeHTML = `<p style="margin-bottom: 10px;"><strong>${remitente}:</strong> ${texto}</p>`;
-                chatHistorial.insertAdjacentHTML('beforeend', mensajeHTML);
-                // Hacer scroll automático hacia abajo
+            function agregarMensaje(remitente, texto, tipoClase) {
+                const div = document.createElement('div');
+                div.className = `mensaje ${tipoClase}`;
+                div.textContent = texto;
+                chatHistorial.appendChild(div);
                 chatHistorial.scrollTop = chatHistorial.scrollHeight;
             }
 
-            async function enviarMensaje() {
+            async function enviarMensaje(e) {
+                e.preventDefault();
                 const mensaje = chatInput.value.trim();
                 if (!mensaje) return;
 
-                // 1. Mostrar lo que el usuario escribió y limpiar el input
-                agregarMensaje('Tú', mensaje);
+                agregarMensaje('Tú', mensaje, 'usuario');
                 chatInput.value = '';
                 
-                // Deshabilitar input mientras responde
                 chatInput.disabled = true;
                 btnEnviar.disabled = true;
 
-                // Agregar indicador de carga temporal
                 const idCarga = 'msg-carga-' + Date.now();
-                chatHistorial.insertAdjacentHTML('beforeend', `<p id="${idCarga}" style="color: #666;"><em>El asistente está pensando...</em></p>`);
+                const cargaDiv = document.createElement('div');
+                cargaDiv.id = idCarga;
+                cargaDiv.className = 'mensaje bot';
+                cargaDiv.style.opacity = '0.7';
+                cargaDiv.innerHTML = '<em>Pensando...</em>';
+                chatHistorial.appendChild(cargaDiv);
                 chatHistorial.scrollTop = chatHistorial.scrollHeight;
 
                 try {
                     const respuesta = await fetch('/chatbot/', {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
+                        headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ mensaje: mensaje })
                     });
-
                     const datos = await respuesta.json();
-
-                    // 3. Quitar el mensaje de "pensando"
                     document.getElementById(idCarga).remove();
 
-                    // 4. Mostrar la respuesta
                     if (datos.respuesta) {
-                        agregarMensaje('Asistente', datos.respuesta);
+                        agregarMensaje('Asistente', datos.respuesta, 'bot');
                     } else {
-                        agregarMensaje('Sistema', 'Error: ' + (datos.error || 'Respuesta inválida.'));
+                        agregarMensaje('Sistema', 'Error: ' + (datos.error || 'Respuesta inválida.'), 'bot');
                     }
-
                 } catch (error) {
                     document.getElementById(idCarga).remove();
-                    agregarMensaje('Sistema', 'Error de conexión con el servidor.');
+                    agregarMensaje('Sistema', 'Error de conexión con el servidor.', 'bot');
                 } finally {
-                    // Volver a habilitar el input
                     chatInput.disabled = false;
                     btnEnviar.disabled = false;
                     chatInput.focus();
                 }
             }
 
-            // Enviar con el botón
-            btnEnviar.addEventListener('click', enviarMensaje);
-
-            // Enviar con la tecla Enter
-            chatInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    enviarMensaje();
-                }
-            });
+            chatFormulario.addEventListener('submit', enviarMensaje);
         });
     </script>
 {% endblock %}
