@@ -1,0 +1,128 @@
+.success-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 82vh;
+    padding: 2rem;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); /* Fondo con degradado sutil */
+}
+
+.success-card {
+    background: #ffffff;
+    border: none;
+    border-radius: 24px;
+    padding: 4rem 3rem;
+    max-width: 550px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.1), 0 10px 20px -5px rgba(15, 23, 42, 0.05); /* Sombra más profunda y elegante */
+    position: relative;
+    overflow: hidden;
+}
+
+/* Efecto de brillo en la parte superior de la tarjeta */
+.success-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, #10b981, #3b82f6);
+}
+
+.success-icon-wrapper {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 100px;
+    background-color: #d1fae5; /* Fondo verde muy claro */
+    border-radius: 50%;
+    margin-bottom: 2rem;
+    animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.success-icon {
+    font-size: 3.5rem;
+    color: #10b981; /* Verde esmeralda vibrante */
+}
+
+@keyframes popIn {
+    0% { transform: scale(0); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.success-title {
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 1rem;
+    letter-spacing: -0.025em;
+}
+
+.success-text {
+    color: #475569;
+    font-size: 1.1rem;
+    margin-bottom: 2.5rem;
+    line-height: 1.6;
+}
+
+.success-text strong {
+    color: #0f172a;
+}
+
+.success-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 1.75rem;
+    border-radius: 12px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    letter-spacing: 0.025em;
+}
+
+.btn-primary {
+    background-color: #0f172a; /* Slate oscuro para mantener el estilo premium */
+    color: #ffffff;
+    box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.2);
+}
+
+.btn-primary:hover {
+    background-color: #1e293b;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 15px -3px rgba(15, 23, 42, 0.3);
+}
+
+.btn-secondary {
+    background-color: #ffffff;
+    color: #0f172a;
+    border: 2px solid #e2e8f0;
+}
+
+.btn-secondary:hover {
+    background-color: #f8fafc;
+    border-color: #cbd5e1;
+    transform: translateY(-3px);
+}
+
+@media (min-width: 600px) {
+    .success-actions {
+        flex-direction: row;
+        justify-content: center;
+        gap: 1.5rem;
+    }
+    .btn {
+        flex: 1;
+        max-width: 200px;
+    }
+}

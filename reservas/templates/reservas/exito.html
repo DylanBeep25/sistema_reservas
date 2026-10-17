@@ -1,7 +1,31 @@
-<!DOCTYPE html>
-<html>
-    <h2>Listo!!</h2>
-    <p>La reservación se realizo con éxito</p>
-    <a href="{% url 'crear_reserva' %}">Hacer otra reserva</a>
+{% extends 'reservas/base.html' %}
+{% load static %}
 
-</html>
+{% block title %}Reserva Exitosa — EduPlace{% endblock %}
+
+{% block css_extra %}
+    <link rel="stylesheet" href="{% static 'reservas/exito.css' %}">
+{% endblock %}
+
+{% block content %}
+    <main class="success-container">
+        <div class="success-card">
+            
+            <!-- Icono verde estilizado dentro de un círculo -->
+            <div class="success-icon-wrapper">
+                <span class="success-icon">✓</span>
+            </div>
+            
+            <h1 class="success-title">¡Reserva Exitosa!</h1>
+            <p class="success-text">
+                Tu solicitud ha sido procesada correctamente en EduPlace.<br>
+                Si solicitaste un <strong>Salón VIP</strong>, recuerda que debes esperar la aprobación del administrador en tu panel.
+            </p>
+            
+            <div class="success-actions">
+                <a href="{% url 'crear_reserva' %}" class="btn btn-secondary">Otra reserva</a>
+                <a href="{% url 'home' %}" class="btn btn-primary">Volver al panel</a>
+            </div>
+        </div>
+    </main>
+{% endblock %}
