@@ -18,8 +18,11 @@ from django.contrib import admin
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from reservas.views import crear_reserva, pagina_de_exito, Home, lista_salones, detalle_salon, api_chatbot, editar_reserva, eliminar_reserva
+from django.views.generic import RedirectView
 
 urlpatterns = [
+    path('', RedirectView.as_view(pattern_name='home', permanent=False), name='raiz'),
+
     path('admin/', admin.site.urls),
     path('reservar/', crear_reserva, name='crear_reserva'),
     path('exito/', pagina_de_exito, name='pagina_de_exito'),
